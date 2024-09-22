@@ -35,7 +35,40 @@ services:
       retries: 3
     networks:
       - default
-
+  nginx-jellyfin-other:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    image: nginx:latest
+    container_name: nginx-jellyfin-other
+    restart: always
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - REPLACE_WITH_YOUR_NGINX_CONF:/etc/nginx/conf.d/default.conf
+      - REPLACE_WITH_YOUT_ZEROTIER_PATH:/var/lib/zerotier-one  # ZeroTier data
+      - REPLACE_WITH_YOUT_NGINX_SSL:/etc/nginx/ssl
+      # Example:
+      # - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      # - /media/frans/frans-docker/docker/jellyfin-other/zerotier-one-nginx:/var/lib/zerotier-one
+      # - ./nginx-ssl:/etc/nginx/ssl
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+    cap_add:
+      - NET_ADMIN
+      - SYS_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    healthcheck:
+      test: ["CMD", "/zerotier-init.sh"]
+      interval: 5s
+      timeout: 10s
+      retries: 3
+    networks:
+      - default
 networks:
   default:
     driver: bridge
