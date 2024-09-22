@@ -30,7 +30,7 @@ services:
       - /dev/net/tun:/dev/net/tun
     healthcheck:
       test: ["CMD", "/zerotier-init.sh"]
-      interval: 30s
+      interval: 5s
       timeout: 10s
       retries: 3
     networks:

@@ -12,15 +12,6 @@ RUN mkdir -p /var/lib/zerotier-one && \
     chown root:root /var/lib/zerotier-one && \
     echo "9993" > /var/lib/zerotier-one/zerotier-one.port
 
-# Create a random authtoken.secret if it doesn't exist
-RUN openssl rand -base64 32 > /var/lib/zerotier-one/authtoken.secret && \
-    chmod 600 /var/lib/zerotier-one/authtoken.secret && \
-    chown root:root /var/lib/zerotier-one/authtoken.secret
-
-# # Expose required ports
-# we don't need to expose ports here, as we will use the zeroTier network
-# EXPOSE 8096 8920
-
 # Copy the zerotier-init script and make it executable
 COPY zerotier-init.sh /zerotier-init.sh
 RUN chmod +x /zerotier-init.sh

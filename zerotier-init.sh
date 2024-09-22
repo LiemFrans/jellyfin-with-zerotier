@@ -4,9 +4,17 @@ set -e
 
 # Ensure correct ZeroTier setup: Create authtoken only if it doesn't exist
 if [ ! -f /var/lib/zerotier-one/authtoken.secret ]; then
-  openssl rand -base64 32 > /var/lib/zerotier-one/authtoken.secret
-  chmod 600 /var/lib/zerotier-one/authtoken.secret
-  chown root:root /var/lib/zerotier-one/authtoken.secret
+    zerotier-one -i generate /var/lib/zerotier-one/authtoken.secret && \
+        chown root:root /var/lib/zerotier-one/authtoken.secret && \
+        chmod 600 /var/lib/zerotier-one/authtoken.secret && \
+        chown root:root /var/lib/zerotier-one/authtoken.secret && \
+        echo "Authtoken created."
+fi
+
+if [ ! -f /var/lib/zerotier-one/identity.secret ]; then
+    zerotier-one -i generate /var/lib/zerotier-one/identity.secret /var/lib/zerotier-one/identity.public && \
+        chown root:root /var/lib/zerotier-one/identity.secret && \
+        chown root:root /var/lib/zerotier-one/identity.public
 fi
 
 # Ensure ZeroTier port is set
