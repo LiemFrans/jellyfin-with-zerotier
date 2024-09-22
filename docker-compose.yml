@@ -1,0 +1,41 @@
+services:
+  jellyfin-other:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jellyfin-other
+    # ports: we don't need to expose any ports, we will use ZeroTier
+    #   - "3000:8096"  # Web interface mapped to port 3000
+    #   - "4000:8920"  # HTTPS web interface mapped to port 4000
+    volumes:
+      - REPLACE_WITH_YOUR_CONFIG_PATH:/config
+      - REPLACE_WITH_YOUR_CACHE_PATH:/cache
+      - REPLACE_WITH_YOUR_MEDIA_PATH:/media
+      - REPLACE_WITH_YOUR_ZEROTIER_PATH:/var/lib/zerotier-one  # ZeroTier data
+      # Example:
+      # - /media/frans/frans-docker/docker/jellyfin-other/config:/config
+      # - /media/frans/frans-docker/docker/jellyfin-other/cache:/cache
+      # - /media/frans/frans-data-other/data/etc:/media
+      # - /media/frans/frans-docker/docker/jellyfin-other/zerotier-one:/var/lib/zerotier-one  # ZeroTier data
+    deploy:
+      restart_policy:
+        condition: unless-stopped
+    environment:
+      - PUID=1000  # Change to your local user id
+      - PGID=1000  # Change to your local group id
+    cap_add:
+      - NET_ADMIN
+      - SYS_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    healthcheck:
+      test: ["CMD", "/zerotier-init.sh"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge
