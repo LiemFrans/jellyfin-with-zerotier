@@ -99,7 +99,6 @@ Feel free to open an issue or submit a pull request with improvements or fixes. 
 ---
 
 This setup is a starting point and may require further configuration based on your media setup and network needs.
-```
 
 ### Explanation:
 - **Introduction and Background**: Updated to reflect the inclusion of Nginx and its role in the setup.
@@ -112,7 +111,6 @@ This setup is a starting point and may require further configuration based on yo
 - **Troubleshooting**: Includes commands for Nginx container logs and network checks.
 - **Contributing**: Details on how others can contribute to the project.
 
-```
 Make sure to adjust the repository URL and any specific paths or placeholders according to your actual setup and preferences.Make sure to adjust the repository URL and any specific instructions according to your actual setup and preferences.
 
 ## Sequence Diagram :
