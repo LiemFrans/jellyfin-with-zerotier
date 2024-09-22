@@ -2,6 +2,20 @@
 
 This project provides a Docker setup for running Jellyfin, a media server, with networking handled by ZeroTier for secure and seamless remote access. This setup ensures that you do not need to expose any ports directly to the internet.
 
+## Background
+
+When running applications like Jellyfin in Docker containers, a common challenge is mapping network ports from the container to the host. This is necessary for accessing services externally. However, exposing these ports directly to the internet can pose security risks and configuration challenges:
+
+- **Security Concerns**: Open ports on your system can be exploited by malicious actors, leading to potential unauthorized access.
+- **Network Complexities**: Managing port mappings, especially when running multiple services, can become complex and error-prone.
+- **Dynamic Networks**: When operating within dynamic network environments (e.g., cloud or shared networks), consistent access via fixed IPs and open ports can be difficult to maintain.
+
+To address these issues, this project utilizes ZeroTier, a virtual networking solution that provides:
+
+- **Secure Networking**: ZeroTier encrypts all traffic, reducing security risks associated with port exposure.
+- **Simplified Configuration**: By creating a virtual network, ZeroTier allows seamless communication without complex port mappings.
+- **Flexibility**: Supports access from anywhere without needing static IP addresses, making it ideal for roaming devices and remote access.
+
 ## Prerequisites
 
 - Docker and Docker Compose installed on your machine
