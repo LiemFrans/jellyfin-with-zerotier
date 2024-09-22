@@ -1,6 +1,6 @@
-# Jellyfin with ZeroTier Docker Setup
+# Jellyfin with ZeroTier and Nginx Docker Setup
 
-This project provides a Docker setup for running Jellyfin, a media server, with networking handled by ZeroTier for secure and seamless remote access. This setup ensures that you do not need to expose any ports directly to the internet.
+This project provides a Docker setup for running Jellyfin, a media server, with networking handled by ZeroTier for secure and seamless remote access. Nginx is included in the setup for reverse proxy and SSL support. This setup ensures that you do not need to expose any ports directly to the internet.
 
 ## Background
 
@@ -10,11 +10,10 @@ When running applications like Jellyfin in Docker containers, a common challenge
 - **Network Complexities**: Managing port mappings, especially when running multiple services, can become complex and error-prone.
 - **Dynamic Networks**: When operating within dynamic network environments (e.g., cloud or shared networks), consistent access via fixed IPs and open ports can be difficult to maintain.
 
-To address these issues, this project utilizes ZeroTier, a virtual networking solution that provides:
+To address these issues, this project utilizes ZeroTier and Nginx:
 
-- **Secure Networking**: ZeroTier encrypts all traffic, reducing security risks associated with port exposure.
-- **Simplified Configuration**: By creating a virtual network, ZeroTier allows seamless communication without complex port mappings.
-- **Flexibility**: Supports access from anywhere without needing static IP addresses, making it ideal for roaming devices and remote access.
+- **ZeroTier**: Provides secure networking with encrypted traffic reducing security risks associated with port exposure.
+- **Nginx**: Acts as a reverse proxy and facilitates SSL termination for secure access over HTTPS.
 
 ## Prerequisites
 
@@ -36,28 +35,33 @@ To address these issues, this project utilizes ZeroTier, a virtual networking so
 
    Replace placeholders in the `docker-compose.yml` file with your paths and network ID:
    
-   - Replace `REPLACE_WITH_YOUR_CONFIG_PATH` with your Jellyfin config path.
-   - Replace `REPLACE_WITH_YOUR_CACHE_PATH` with your Jellyfin cache path.
-   - Replace `REPLACE_WITH_YOUR_MEDIA_PATH` with your media files path.
-   - Replace `REPLACE_WITH_YOUR_ZEROTIER_PATH` with your ZeroTier data path.
-   - Replace `REPLACE_WITH_NETWORK_ID` with your ZeroTier network ID.
+   - Jellyfin:
+     - Replace `REPLACE_WITH_YOUR_CONFIG_PATH` with your Jellyfin config path.
+     - Replace `REPLACE_WITH_YOUR_CACHE_PATH` with your Jellyfin cache path.
+     - Replace `REPLACE_WITH_YOUR_MEDIA_PATH` with your media files path.
+     - Replace `REPLACE_WITH_YOUR_ZEROTIER_PATH` with your ZeroTier data path.
+   - Nginx:
+     - Replace `REPLACE_WITH_YOUR_NGINX_CONF` with your Nginx configuration file path.
+     - Replace `REPLACE_WITH_YOUR_NGINX_SSL` with your path to SSL certificates.
+   - General:
+     - Replace `REPLACE_WITH_NETWORK_ID` with your ZeroTier network ID.
 
-3. **Build and Deploy the Container**
+3. **Build and Deploy the Containers**
 
-   Run the following command to build and start the container:
+   Run the following command to build and start the containers:
 
    ```bash
    docker-compose up --build -d
    ```
 
-   The service will start automatically and join the configured ZeroTier network.
+   The Jellyfin and Nginx services will start automatically and join the configured ZeroTier network.
 
 4. **Access Jellyfin**
 
-   Use ZeroTier network to access Jellyfin:
+   Use ZeroTier networking to access Jellyfin:
 
    - Find the Jellyfin instance's IP in the ZeroTier network.
-   - Open your web browser and go to `http://<Jellyfin_IP>:8096`.
+   - Access via Nginx using HTTPS with the following URL: `https://<Nginx_IP>`.
 
 ## Customization
 
@@ -71,16 +75,21 @@ Ensure that your machine is also part of the ZeroTier network. Use the ZeroTier 
 
 ## Troubleshooting
 
-- **Container Logs**: Check the logs of the Jellyfin container using:
+- **Container Logs**: Check the logs of the Jellyfin or Nginx container using:
 
   ```bash
   docker logs jellyfin-other
   ```
 
-- **ZeroTier Connection**: Verify that the container has successfully joined the ZeroTier network:
+  ```bash
+  docker logs nginx-jellyfin-other
+  ```
+
+- **ZeroTier Connection**: Verify that the containers have successfully joined the ZeroTier network:
 
   ```bash
   docker exec jellyfin-other zerotier-cli listnetworks
+  docker exec nginx-jellyfin-other zerotier-cli listnetworks
   ```
 
 ## Contributing
@@ -93,12 +102,14 @@ This setup is a starting point and may require further configuration based on yo
 ```
 
 ### Explanation:
-- **Introduction**: The README begins with a brief introduction to the project.
+- **Introduction and Background**: Updated to reflect the inclusion of Nginx and its role in the setup.
 - **Prerequisites**: Lists the required software and accounts.
 - **Setup Instructions**: Provides step-by-step instructions for setting up the environment, building, and deploying the container.
+- **Access Instructions**: Updated for accessing Jellyfin through the Nginx proxy with HTTPS.
+- **Build and Deploy Instructions**: Now encompass the deployment of multiple containers including Nginx.
 - **Customization**: Explains how to modify environment variables.
 - **ZeroTier Network**: Highlights the significance of being part of the same ZeroTier network.
-- **Troubleshooting**: Offers basic troubleshooting steps.
+- **Troubleshooting**: Includes commands for Nginx container logs and network checks.
 - **Contributing**: Details on how others can contribute to the project.
 
-Make sure to adjust the repository URL and any specific instructions according to your actual setup and preferences.
+Make sure to adjust the repository URL and any specific paths or placeholders according to your actual setup and preferences.Make sure to adjust the repository URL and any specific instructions according to your actual setup and preferences.
