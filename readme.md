@@ -115,6 +115,7 @@ This setup is a starting point and may require further configuration based on yo
 ```
 Make sure to adjust the repository URL and any specific paths or placeholders according to your actual setup and preferences.Make sure to adjust the repository URL and any specific instructions according to your actual setup and preferences.
 
+## Sequence Diagram :
 
 ```mermaid
 sequenceDiagram
