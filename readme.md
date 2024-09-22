@@ -1,4 +1,3 @@
-```markdown
 # Jellyfin with ZeroTier Docker Setup
 
 This project provides a Docker setup for running Jellyfin, a media server, with networking handled by ZeroTier for secure and seamless remote access. This setup ensures that you do not need to expose any ports directly to the internet.
